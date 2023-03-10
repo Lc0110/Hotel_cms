@@ -26,3 +26,17 @@ export function editRoomByid(data) {
     data,
   });
 }
+
+export function changeRoomStatus(data) {
+  return hyRequest.post({
+    url: `/room/change`,
+    data,
+  });
+}
+
+export function searchRoom(data) {
+  return hyRequest.post({
+    url: `/room/search`,
+    data,
+  });
+}

@@ -4,6 +4,8 @@ import {
   createRoom,
   deleteRoomByid,
   editRoomByid,
+  changeRoomStatus,
+  searchRoom,
 } from "@/service/main/room";
 import { fetchClassifyList } from "@/service/main/classify";
 
@@ -39,6 +41,10 @@ const RoomStore = defineStore("room", {
       const Result = await fetchClassifyList(isFirst);
       this.classify = Result.data;
       console.log(Result);
+    },
+    async changeStatus(isFirst) {
+      const changeResult = await changeRoomStatus(isFirst);
+      console.log(changeResult);
     },
   },
 });

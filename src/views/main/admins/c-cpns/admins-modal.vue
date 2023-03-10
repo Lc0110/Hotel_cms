@@ -89,6 +89,7 @@ function handleConfirmClick() {
             adm_id: editData.value.adm_id,
             ...formData
         }
+        console.log(editData.value);
         adminsStore.editAdminsAction(data)
     } else {
         // 创建新的用户

@@ -4,6 +4,7 @@ import {
   createGuest,
   deleteGuestByid,
   editGuestByid,
+  searchGuest,
 } from "@/service/main/guest";
 import { fetchClassifyList } from "@/service/main/classify";
 

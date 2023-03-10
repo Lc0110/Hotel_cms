@@ -27,3 +27,11 @@ export function editOrderByid(data) {
     data,
   });
 }
+
+export function changeOrderStatus(data) {
+  return hyRequest.post({
+    url: `/order/change`,
+    data,
+  });
+}
+

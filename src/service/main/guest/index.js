@@ -26,3 +26,10 @@ export function editGuestByid(data) {
     data,
   });
 }
+
+export function searchGuest(data) {
+  return hyRequest.post({
+    url: `/guest/search`,
+    data,
+  });
+}

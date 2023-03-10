@@ -17,12 +17,6 @@
               </el-icon>
               <span>退出系统</span>
             </el-dropdown-item>
-            <el-dropdown-item>
-              <el-icon>
-                <Unlock />
-              </el-icon>
-              <span>修改密码</span>
-            </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -85,9 +79,11 @@ function handleExitClick() {
 }
 
 .info {
+
   .welcome {
     font-size: 18px;
     margin-right: 20px;
+    line-height: 30px;
   }
 
   .user-info {

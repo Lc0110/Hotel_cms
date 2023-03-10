@@ -4,6 +4,7 @@ import {
   createOrder,
   deleteOrderByid,
   editOrderByid,
+  changeOrderStatus,
 } from "@/service/main/order";
 
 const OrderStore = defineStore("order", {
@@ -31,6 +32,10 @@ const OrderStore = defineStore("order", {
       const editResult = await editOrderByid(data);
       console.log(editResult);
       this.getOrderList({ size: 10, offset: 0 });
+    },
+    async changeStatus(data) {
+      const changeResult = await changeOrderStatus(data);
+      console.log(changeResult);
     },
   },
 });

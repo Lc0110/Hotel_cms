@@ -34,12 +34,12 @@
                 <el-table-column align="center" label="备注" prop="note"></el-table-column>
                 <el-table-column align="center" label="操作" width="200px">
                     <template #default="scope">
-                        <el-button size="small" icon="Edit" type="primary" text @click="handleEditBtnClick(scope.row)"
+                        <el-button size="small" icon="Edit" type="primary" text @click="handleCreateBtnClick(scope.row)"
                             v-if="scope.row.status !== 2 && scope.row.status !== 4">
                             开房
                         </el-button>
                         <el-button size="small" icon="Delete" type="danger" text
-                            @click="handleDeleteBtnClick(scope.row.cfy_id)" v-if="scope.row.status !== 4">
+                            @click="handleExitBtnClick(scope.row.ord_id)" v-if="scope.row.status !== 4">
                             退房
                         </el-button>
                     </template>
@@ -64,6 +64,7 @@ const currentPage = ref(1)
 const pageSize = ref(10)
 const orderStore = useOrderStore()
 fetchOrderListData()
+const emit = defineEmits(['createRoomClick', 'exitRoomClick'])
 
 const comType = computed(() => {
     return function (status) {
@@ -108,8 +109,11 @@ function fetchOrderListData(ord_id = "") {
     orderStore.getOrderList(queryInfo)
 }
 
-function handleDeleteBtnClick(id) {
-    orderStore.deleteOrderAction({ id });
+function handleExitBtnClick(itemData) {
+    emit('exitRoomClick', itemData)
+}
+function handleCreateBtnClick(id) {
+    emit('createRoomClick', id)
 }
 
 defineExpose({ fetchOrderListData })
