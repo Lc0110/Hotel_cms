@@ -7,6 +7,7 @@ import {
   searchGuest,
 } from "@/service/main/guest";
 import { fetchClassifyList } from "@/service/main/classify";
+import { ElMessage } from "element-plus";
 
 const GuestStore = defineStore("guest", {
   state: () => ({
@@ -24,16 +25,43 @@ const GuestStore = defineStore("guest", {
       console.log(data);
       const createRes = await createGuest(data);
       console.log(createRes);
+      if (createRes.code === -1001) {
+        ElMessage({
+          message: "请填写完整信息！",
+          type: "error",
+        });
+      } else {
+        ElMessage({
+          message: "创建成功！",
+          type: "success",
+        });
+      }
       this.getGuestList({ size: 10, offset: 0 });
     },
     async deleteGuestAction(id) {
       const delResult = await deleteGuestByid(id);
       console.log(delResult);
+      ElMessage({
+        message: "删除成功！",
+        type: "success",
+      });
       this.getGuestList({ size: 10, offset: 0 });
     },
     async editGuestAction(data) {
+      console.log(data);
       const editResult = await editGuestByid(data);
       console.log(editResult);
+      if (editResult.code === -1001) {
+        ElMessage({
+          message: "请填写完整信息！",
+          type: "error",
+        });
+      } else {
+        ElMessage({
+          message: "修改成功！",
+          type: "success",
+        });
+      }
       this.getGuestList({ size: 10, offset: 0 });
     },
     async getClassify(isFirst) {

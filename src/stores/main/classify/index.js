@@ -5,6 +5,7 @@ import {
   deleteClassifyByid,
   editClassifyByid,
 } from "@/service/main/classify";
+import { ElMessage } from "element-plus";
 
 const ClassifyStore = defineStore("classify", {
   state: () => ({
@@ -20,16 +21,42 @@ const ClassifyStore = defineStore("classify", {
     async createClassifyAction(data) {
       const createRes = await createClassify(data);
       console.log(createRes);
+      if (createRes.code === -1001) {
+        ElMessage({
+          message: "请填写完整信息！",
+          type: "error",
+        });
+      } else {
+        ElMessage({
+          message: "创建成功！",
+          type: "success",
+        });
+      }
       this.getClassifyList({ size: 10, offset: 0 });
     },
     async deleteClassifyAction(id) {
       const delResult = await deleteClassifyByid(id);
       console.log(delResult);
+      ElMessage({
+        message: "删除成功！",
+        type: "success",
+      });
       this.getClassifyList({ size: 10, offset: 0 });
     },
     async editClassifyAction(data) {
       const editResult = await editClassifyByid(data);
       console.log(editResult);
+      if (editResult.code === -1001) {
+        ElMessage({
+          message: "请填写完整信息！",
+          type: "error",
+        });
+      } else {
+        ElMessage({
+          message: "修改成功！",
+          type: "success",
+        });
+      }
       this.getClassifyList({ size: 10, offset: 0 });
     },
   },

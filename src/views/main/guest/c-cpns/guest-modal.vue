@@ -25,9 +25,6 @@
                     <el-form-item label="价格" prop="price">
                         <el-input v-model="formData.price" placeholder="请输入价格" />
                     </el-form-item>
-                    <el-form-item label="数量" prop="num">
-                        <el-input v-model="formData.num" placeholder="请输入数量" />
-                    </el-form-item>
                     <el-form-item label="面积" prop="area">
                         <el-input v-model="formData.area" placeholder="请输入面积" />
                     </el-form-item>
@@ -37,7 +34,34 @@
                     <el-form-item label="客房描述" prop="description">
                         <el-input v-model="formData.description" placeholder="请输入描述" />
                     </el-form-item>
-
+                    <el-form-item label="有无空调" prop="is_kt">
+                        <el-select v-model="formData.is_kt" placeholder="请选择是否有空调" style="width: 100%">
+                            <template v-for="item in arr" :key="item.id">
+                                <el-option :label="item.name" :value="item.id" />
+                            </template>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="是否推荐" prop="is_tj">
+                        <el-select v-model="formData.is_tj" placeholder="请选择是否推荐" style="width: 100%">
+                            <template v-for="item in arr" :key="item.id">
+                                <el-option :label="item.name" :value="item.id" />
+                            </template>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="有无wifi" prop="is_wifi">
+                        <el-select v-model="formData.is_wifi" placeholder="请选择是否有wifi" style="width: 100%">
+                            <template v-for="item in arr" :key="item.id">
+                                <el-option :label="item.name" :value="item.id" />
+                            </template>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="有无窗户" prop="is_window">
+                        <el-select v-model="formData.is_window" placeholder="请选择是否有窗户" style="width: 100%">
+                            <template v-for="item in arr" :key="item.id">
+                                <el-option :label="item.name" :value="item.id" />
+                            </template>
+                        </el-select>
+                    </el-form-item>
                 </el-form>
             </div>
             <template #footer>
@@ -65,11 +89,19 @@ const formData = reactive({
     name: '',
     c_id: '',
     price: '',
-    num: '',
     area: '',
     live: '',
-    description: ''
+    description: '',
+    is_wifi: '',
+    is_tj: '',
+    is_kt: '',
+    is_window: ''
 })
+
+const arr = [
+    { name: "是", id: "1" },
+    { name: "否", id: "0" }
+]
 const isNewRef = ref(true)
 const editData = ref()
 const guestStore = useGuestStore()
@@ -89,6 +121,13 @@ function setModalVisible(isNew = true, itemData) {
         // 编辑数据
         for (const key in formData) {
             formData[key] = itemData[key]
+            if (key === "is_wifi" || key === "is_kt" || key === "is_window" || key === "is_tj") {
+                if (itemData[key] === 1) {
+                    formData[key] = "是"
+                } else {
+                    formData[key] = "否"
+                }
+            }
         }
         editData.value = itemData
     } else {

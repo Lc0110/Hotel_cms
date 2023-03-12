@@ -23,7 +23,7 @@
 
     <!-- 底部区域 -->
     <div class="controls">
-      <el-checkbox v-model="isRemPwd" label="记住密码" size="large" />
+      <el-checkbox v-model="isRemPwd" :checked="isRemPwd" label="记住密码" size="large" />
     </div>
     <el-button class="login-btn" type="primary" size="large" @click="handleLoginBtnClick"> 立即登录 </el-button>
   </div>
@@ -35,7 +35,9 @@ import PaneAccount from './pane-account.vue'
 
 const activeName = ref('account')
 const isRemPwd = ref(localStorage.getItem('isRemPwd') ?? false)
+
 watch(isRemPwd, (newValue) => {
+  console.log(newValue);
   localStorage.setItem('isRemPwd', newValue)
 })
 const accountRef = ref()

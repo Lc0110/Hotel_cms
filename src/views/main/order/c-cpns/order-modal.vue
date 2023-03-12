@@ -36,10 +36,8 @@ const isCreateRef = ref(true)
 const createData = ref()
 const orderId = ref()
 
-
 const roomStore = useRoomStore()
 const orderStore = useOrderStore()
-
 
 // 2.定义设置dialogVisible方法
 function setModalVisible(isCreate = true, itemData) {
@@ -69,8 +67,7 @@ function handleConfirmClick() {
             ord_id: orderId.value,
             status: 4
         }
-        roomStore.changeStatus(roomData)
-        orderStore.changeStatus(orderData)
+        roomStore.changeStatus(roomData, orderData)
     } else {
         // 开房
         let data = {
@@ -93,6 +90,7 @@ function handleConfirmClick() {
             })
 
         })
+        orderStore.getOrderList({ size: 10, offset: 0 });
     }
 }
 

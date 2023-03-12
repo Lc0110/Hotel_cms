@@ -32,7 +32,7 @@ const useLoginStore = defineStore("login", {
           });
         } else {
           ElMessage({
-            message: "登陆成功.",
+            message: "登录成功.",
             type: "success",
           });
           this.token = res.data.username;

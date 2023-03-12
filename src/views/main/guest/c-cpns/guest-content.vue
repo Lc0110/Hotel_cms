@@ -16,9 +16,28 @@
                 <el-table-column align="center" label="客房名称" prop="name" width="140px" />、
                 <el-table-column align="center" label="分类" prop="c_name" width="140px" />
                 <el-table-column align="center" label="价格" prop="price" width="120px" />
-                <el-table-column align="center" label="数量" prop="num" width="120px" />
                 <el-table-column align="center" label="面积" prop="area" width="120px" />
                 <el-table-column align="center" label="可住人数" prop="live" width="120px" />
+                <el-table-column align="center" label="是否有wifi" prop="is_wifi" width="120px">
+                    <template #default="scope">
+                        {{ formatIs(scope.row.is_wifi) }}
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="是否推荐" prop="is_tj" width="120px">
+                    <template #default="scope">
+                        {{ formatIs(scope.row.is_tj, true) }}
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="是否有窗户" prop="is_window" width="120px">
+                    <template #default="scope">
+                        {{ formatIs(scope.row.is_window) }}
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="是否有空调" prop="is_kt" width="120px">
+                    <template #default="scope">
+                        {{ formatIs(scope.row.is_kt) }}
+                    </template>
+                </el-table-column>
                 <el-table-column align="center" label="创建时间" prop="createAt">
                     <template #default="scope">
                         {{ formatUTC(scope.row.createAt) }}
@@ -51,6 +70,20 @@ import { storeToRefs } from 'pinia'
 import { ref } from 'vue';
 import useGuestStore from '@/stores/main/guest'
 import { formatUTC } from '@/utils/format';
+
+function formatIs(is, type = false) {
+    if (is === 1) {
+        if (type) {
+            return "是"
+        }
+        return "有"
+    } else {
+        if (type) {
+            return "否"
+        }
+        return "无"
+    }
+}
 
 const currentPage = ref(1)
 const pageSize = ref(10)

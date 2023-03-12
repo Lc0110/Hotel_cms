@@ -28,7 +28,7 @@
                             编辑
                         </el-button>
                         <el-button size="small" icon="Delete" type="danger" text
-                            @click="handleDeleteBtnClick(scope.row.cfy_id)">
+                            @click="handleDeleteBtnClick(scope.row.adm_id)">
                             删除
                         </el-button>
                     </template>
