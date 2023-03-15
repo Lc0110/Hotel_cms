@@ -26,3 +26,17 @@ export function createMember(data) {
     data,
   });
 }
+
+export function getMemberData(data) {
+  return hyRequest.post({
+    url: `main/getdata`,
+    data,
+  });
+}
+
+export function getMemberSevenData(data) {
+  return hyRequest.post({
+    url: `main/getSevenData`,
+    data,
+  });
+}

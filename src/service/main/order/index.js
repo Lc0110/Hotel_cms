@@ -35,3 +35,17 @@ export function changeOrderStatus(data) {
   });
 }
 
+export function getOrderData(data) {
+  return hyRequest.post({
+    url: `order/getdata`,
+    data,
+  });
+}
+
+
+export function getOrderSevenData(data) {
+  return hyRequest.post({
+    url: `order/getSevenData`,
+    data,
+  });
+}

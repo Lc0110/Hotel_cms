@@ -33,3 +33,17 @@ export function searchGuest(data) {
     data,
   });
 }
+
+export function getGuestData(data) {
+  return hyRequest.post({
+    url: `guest/getdata`,
+    data,
+  });
+}
+
+export function getGuestSevenData(data) {
+  return hyRequest.post({
+    url: `guest/getSevenData`,
+    data,
+  });
+}
