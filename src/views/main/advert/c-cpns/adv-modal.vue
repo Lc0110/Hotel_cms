@@ -2,7 +2,7 @@
   <div class="modal">
     <el-dialog v-model="dialogVisible" :title="isNewRef ? '新建轮播图' : '编辑轮播图'" width="30%" center>
       <div class="form">
-        <el-form :model="formData" label-width="80px" size="large">
+        <el-form :model="formData" label-width="80px" size="large" :rules="rules" ref="ruleFormRef">
           <el-form-item label="上传图片" prop="imgUrl">
             <el-upload class="avatar-uploader" :action="url" :show-file-list="false" :on-success="handleSuccess"
               :on-error="handleError">
@@ -27,7 +27,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="handleConfirmClick">
+          <el-button type="primary" @click="handleConfirmClick(ruleFormRef)">
             确定
           </el-button>
         </span>
@@ -47,13 +47,22 @@ const formData = reactive({
   sort: '',
   status: '',
 })
+// const url = 'http://193.32.150.29:8000/advert/upload'
 const url = 'http://localhost:8000/advert/upload'
 const isNewRef = ref(true)
+const ruleFormRef = ref()
 const editData = ref()
 const statusArr = [
   { name: "启用", id: "1" },
   { name: "禁用", id: "0" }
 ]
+
+const rules = reactive({
+  sort: [
+    { required: true, message: '请输入排序', trigger: 'blur' },
+  ],
+})
+
 
 const handleSuccess = (response) => {
   formData.imgurl = response.url;
@@ -91,20 +100,26 @@ function setModalVisible(isNew = true, itemData) {
 }
 
 // 3.点击了确定的逻辑
-function handleConfirmClick() {
-  dialogVisible.value = false
-  if (!isNewRef.value && editData.value) {
-    // 编辑用户的数据
-    let data = {
-      adv_id: editData.value.adv_id,
-      ...formData
+async function handleConfirmClick(formEl) {
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      dialogVisible.value = false
+      if (!isNewRef.value && editData.value) {
+        // 编辑用户的数据
+        let data = {
+          adv_id: editData.value.adv_id,
+          ...formData
+        }
+        advertStore.editAdvertAction(data)
+      } else {
+        // 创建新的用户
+        console.log(formData);
+        advertStore.createAdvertAction(formData)
+      }
+    } else {
+      console.log('error submit!', fields)
     }
-    advertStore.editAdvertAction(data)
-  } else {
-    // 创建新的用户
-    console.log(formData);
-    advertStore.createAdvertAction(formData)
-  }
+  })
 }
 
 // 暴露的属性和方法

@@ -2,7 +2,7 @@
     <div class="modal">
         <el-dialog v-model="dialogVisible" :title="isNewRef ? '新建管理员' : '编辑管理员'" width="30%" center>
             <div class="form">
-                <el-form :model="formData" label-width="80px" size="large">
+                <el-form :model="formData" label-width="80px" size="large" :rules="rules" ref="ruleFormRef">
                     <el-form-item label="用户名" prop="username">
                         <el-input v-model="formData.username" placeholder="请输入用户名" />
                     </el-form-item>
@@ -24,7 +24,7 @@
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="dialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="handleConfirmClick">
+                    <el-button type="primary" @click="handleConfirmClick(ruleFormRef)">
                         确定
                     </el-button>
                 </span>
@@ -39,6 +39,7 @@ import useAdminsStore from '@/stores/main/admins'
 
 // 1.定义内部的属性
 const dialogVisible = ref(false)
+const ruleFormRef = ref()
 const formData = reactive({
     username: '',
     phonenumber: '',
@@ -53,6 +54,22 @@ const statusArr = [
 ]
 
 const adminsStore = useAdminsStore()
+
+
+const rules = reactive({
+    username: [
+        { required: true, message: '请输入用户名', trigger: 'blur' },
+        { max: 15, message: '用户名长度太长', trigger: 'blur' },
+    ],
+    phonenumber: [
+        { required: true, message: '请输入电话号码', trigger: 'blur' },
+        { min: 11, max: 11, message: '电话号码为11位', trigger: 'blur' },
+    ],
+    password: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+
+    ],
+})
 
 // 2.定义设置dialogVisible方法
 function setModalVisible(isNew = true, itemData) {
@@ -81,21 +98,29 @@ function setModalVisible(isNew = true, itemData) {
 }
 
 // 3.点击了确定的逻辑
-function handleConfirmClick() {
-    dialogVisible.value = false
-    if (!isNewRef.value && editData.value) {
-        // 编辑用户的数据
-        let data = {
-            adm_id: editData.value.adm_id,
-            ...formData
+async function handleConfirmClick(formEl) {
+    await formEl.validate((valid, fields) => {
+        if (valid) {
+            dialogVisible.value = false
+            if (!isNewRef.value && editData.value) {
+                // 编辑用户的数据
+                let data = {
+                    adm_id: editData.value.adm_id,
+                    ...formData
+                }
+                console.log(data);
+                console.log(editData.value);
+                adminsStore.editAdminsAction(data)
+            } else {
+                // 创建新的用户
+                console.log(formData);
+                adminsStore.createAdminsAction(formData)
+            }
+        } else {
+            console.log('error submit!', fields)
         }
-        console.log(editData.value);
-        adminsStore.editAdminsAction(data)
-    } else {
-        // 创建新的用户
-        console.log(formData);
-        adminsStore.createAdminsAction(formData)
-    }
+    })
+
 }
 
 // 暴露的属性和方法

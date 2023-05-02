@@ -2,7 +2,7 @@
     <div class="modal">
         <el-dialog v-model="dialogVisible" :title="isNewRef ? '新建分类' : '编辑分类'" width="30%" center>
             <div class="form">
-                <el-form :model="formData" label-width="80px" size="large">
+                <el-form :model="formData" label-width="80px" size="large" :rules="rules" ref="ruleFormRef">
                     <el-form-item label="分类名称" prop="name">
                         <el-input v-model="formData.name" placeholder="请输入分类名称" />
                     </el-form-item>
@@ -14,7 +14,7 @@
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="dialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="handleConfirmClick">
+                    <el-button type="primary" @click="handleConfirmClick(ruleFormRef)">
                         确定
                     </el-button>
                 </span>
@@ -29,6 +29,7 @@ import useClassifyStore from '@/stores/main/classify'
 
 // 1.定义内部的属性
 const dialogVisible = ref(false)
+const ruleFormRef = ref()
 const formData = reactive({
     name: '',
     sort: '',
@@ -38,6 +39,17 @@ const isNewRef = ref(true)
 const editData = ref()
 
 const classifyStore = useClassifyStore()
+
+const rules = reactive({
+    name: [
+        { required: true, message: '请输入分类名称', trigger: 'blur' },
+    ],
+    sort: [
+        { required: true, message: '请输入序号', trigger: 'blur' },
+    ],
+
+})
+
 
 // 2.定义设置dialogVisible方法
 function setModalVisible(isNew = true, itemData) {
@@ -59,20 +71,26 @@ function setModalVisible(isNew = true, itemData) {
 }
 
 // 3.点击了确定的逻辑
-function handleConfirmClick() {
-    dialogVisible.value = false
-    if (!isNewRef.value && editData.value) {
-        // 编辑用户的数据
-        let data = {
-            cfy_id: editData.value.cfy_id,
-            ...formData
+async function handleConfirmClick(formEl) {
+    await formEl.validate((valid, fields) => {
+        if (valid) {
+            dialogVisible.value = false
+            if (!isNewRef.value && editData.value) {
+                // 编辑用户的数据
+                let data = {
+                    cfy_id: editData.value.cfy_id,
+                    ...formData
+                }
+                classifyStore.editClassifyAction(data)
+            } else {
+                // 创建新的用户
+                console.log(formData);
+                classifyStore.createClassifyAction(formData)
+            }
+        } else {
+            console.log('error submit!', fields)
         }
-        classifyStore.editClassifyAction(data)
-    } else {
-        // 创建新的用户
-        console.log(formData);
-        classifyStore.createClassifyAction(formData)
-    }
+    })
 }
 
 // 暴露的属性和方法

@@ -2,7 +2,7 @@
     <div class="modal">
         <el-dialog v-model="dialogVisible" :title="isNewRef ? '新建客房' : '编辑客房'" width="30%" center>
             <div class="form">
-                <el-form :model="formData" label-width="80px" size="large">
+                <el-form :model="formData" label-width="80px" size="large" :rules="rules" ref="ruleFormRef">
                     <el-form-item label="上传图片" prop="imgUrl">
                         <el-upload class="avatar-uploader" :action="url" :show-file-list="false" :on-success="handleSuccess"
                             :on-error="handleError">
@@ -67,7 +67,7 @@
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="dialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="handleConfirmClick">
+                    <el-button type="primary" @click="handleConfirmClick(ruleFormRef)">
                         确定
                     </el-button>
                 </span>
@@ -83,6 +83,7 @@ import { storeToRefs } from 'pinia';
 
 // 1.定义内部的属性
 const dialogVisible = ref(false)
+// const url = 'http://193.32.150.29:8000/advert/upload'
 const url = 'http://localhost:8000/advert/upload'
 const formData = reactive({
     imgurl: '',
@@ -97,7 +98,7 @@ const formData = reactive({
     is_kt: '',
     is_window: ''
 })
-
+const ruleFormRef = ref()
 const arr = [
     { name: "是", id: "1" },
     { name: "否", id: "0" }
@@ -113,6 +114,25 @@ const handleSuccess = (response) => {
 const handleError = (err, uploadFile) => {
     console.log(err, uploadFile);
 }
+
+const rules = reactive({
+    name: [
+        { required: true, message: '请输入客房名称', trigger: 'blur' },
+    ],
+    price: [
+        { required: true, message: '请输入价格', trigger: 'blur' },
+    ],
+    area: [
+        { required: true, message: '请输入面积', trigger: 'blur' },
+    ],
+    live: [
+        { required: true, message: '请输入可住人数', trigger: 'blur' },
+    ],
+    description: [
+        { required: true, message: '请输入描述', trigger: 'blur' },
+    ]
+})
+
 // 2.定义设置dialogVisible方法
 function setModalVisible(isNew = true, itemData) {
     dialogVisible.value = true
@@ -140,20 +160,26 @@ function setModalVisible(isNew = true, itemData) {
 }
 
 // 3.点击了确定的逻辑
-function handleConfirmClick() {
-    dialogVisible.value = false
-    if (!isNewRef.value && editData.value) {
-        // 编辑用户的数据
-        let data = {
-            gst_id: editData.value.gst_id,
-            ...formData
+async function handleConfirmClick(formEl) {
+    await formEl.validate((valid, fields) => {
+        if (valid) {
+            dialogVisible.value = false
+            if (!isNewRef.value && editData.value) {
+                // 编辑用户的数据
+                let data = {
+                    gst_id: editData.value.gst_id,
+                    ...formData
+                }
+                guestStore.editGuestAction(data)
+            } else {
+                // 创建新的用户
+                console.log(formData);
+                guestStore.createGuestAction(formData)
+            }
+        } else {
+            console.log('error submit!', fields)
         }
-        guestStore.editGuestAction(data)
-    } else {
-        // 创建新的用户
-        console.log(formData);
-        guestStore.createGuestAction(formData)
-    }
+    })
 }
 
 // 暴露的属性和方法

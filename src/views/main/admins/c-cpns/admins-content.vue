@@ -6,8 +6,8 @@
         </div>
         <div class="table">
             <el-table :data="adminsList" border style="width: 100%">
-                <el-table-column align="center" label="用户名" prop="username" width="140px" />
-                <el-table-column align="center" label="手机号码" prop="phonenumber" width="400px" />
+                <el-table-column align="center" label="用户名" prop="username" width="180px" />
+                <el-table-column align="center" label="手机号码" prop="phonenumber" width="200px" />
                 <el-table-column align="center" label="状态" prop="status" width="120px">
                     <!-- 作用域插槽 -->
                     <template #default="scope">

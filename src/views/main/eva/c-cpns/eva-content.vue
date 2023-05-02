@@ -16,7 +16,7 @@
                 <el-table-column align="center" label="操作" width="200px">
                     <template #default="scope">
                         <el-button size="small" icon="Delete" type="danger" text
-                            @click="handleDeleteBtnClick(scope.row.cfy_id)">
+                            @click="handleDeleteBtnClick(scope.row.eva_id)">
                             删除
                         </el-button>
                     </template>

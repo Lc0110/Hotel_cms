@@ -2,7 +2,7 @@
     <div class="modal">
         <el-dialog v-model="dialogVisible" :title="isNewRef ? '新建房间' : '编辑房间'" width="30%" center>
             <div class="form">
-                <el-form :model="formData" label-width="80px" size="large">
+                <el-form :model="formData" label-width="80px" size="large" :rules="rules" ref="ruleFormRef">
                     <el-form-item label="房间编号" prop="room_id" v-if="isNewRef">
                         <el-input v-model="formData.room_id" placeholder="请输入房间编号" />
                     </el-form-item>
@@ -28,7 +28,7 @@
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="dialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="handleConfirmClick">
+                    <el-button type="primary" @click="handleConfirmClick(ruleFormRef)">
                         确定
                     </el-button>
                 </span>
@@ -44,6 +44,8 @@ import { storeToRefs } from 'pinia';
 
 // 1.定义内部的属性
 const dialogVisible = ref(false)
+const ruleFormRef = ref()
+// const url = 'http://193.32.150.29:8000/advert/upload'
 const url = 'http://localhost:8000/advert/upload'
 const formData = reactive({
     room_id: '',
@@ -61,6 +63,14 @@ const isNewRef = ref(true)
 const editData = ref()
 const roomStore = useRoomStore()
 const { classify } = storeToRefs(roomStore)
+const rules = reactive({
+    room_id: [
+        { required: true, message: '请输入房间编号', trigger: 'blur' },
+    ],
+    o_id: [
+        { required: true, message: '请输入订单编号', trigger: 'blur' },
+    ],
+})
 
 // 2.定义设置dialogVisible方法
 function setModalVisible(isNew = true, itemData) {
@@ -89,20 +99,27 @@ function setModalVisible(isNew = true, itemData) {
 }
 
 // 3.点击了确定的逻辑
-function handleConfirmClick() {
-    dialogVisible.value = false
-    if (!isNewRef.value && editData.value) {
-        // 编辑用户的数据
-        let data = {
-            room_id: editData.value.room_id,
-            ...formData
+async function handleConfirmClick(formEl) {
+    await formEl.validate((valid, fields) => {
+        if (valid) {
+            dialogVisible.value = false
+            if (!isNewRef.value && editData.value) {
+                // 编辑用户的数据
+                let data = {
+                    room_id: editData.value.room_id,
+                    ...formData
+                }
+                roomStore.editRoomAction(data)
+            } else {
+                // 创建新的用户
+                console.log(formData);
+                roomStore.createRoomAction(formData)
+            }
+        } else {
+            console.log('error submit!', fields)
         }
-        roomStore.editRoomAction(data)
-    } else {
-        // 创建新的用户
-        console.log(formData);
-        roomStore.createRoomAction(formData)
-    }
+    })
+
 }
 
 // 暴露的属性和方法

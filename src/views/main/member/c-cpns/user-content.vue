@@ -16,7 +16,7 @@
         <el-table-column align="center" type="index" label="序号" width="100px" />
         <el-table-column align="center" label="用户昵称" prop="nickname" width="150px" />
         <el-table-column align="center" label="真实姓名" prop="realname" width="150px" />
-        <el-table-column align="center" label="手机号码" prop="phonenumber" width="150px" />
+        <el-table-column align="center" label="手机号码" prop="phonenumber" width="180px" />
         <el-table-column align="center" label="创建时间" prop="createAt">
           <template #default="scope">
             {{ formatUTC(scope.row.createAt) }}

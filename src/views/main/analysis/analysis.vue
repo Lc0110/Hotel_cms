@@ -57,7 +57,7 @@ function getBeforeDate(n) {
     return s;
 }
 for (var i = 0; i > -7; i--) {
-    dateArr.push(getBeforeDate(i));
+    dateArr.unshift(getBeforeDate(i));
 }
 console.log(dateArr);
 getMemberData().then(res => {
@@ -83,7 +83,7 @@ onMounted(() => {
             xAxis: {
                 name: '日期',
                 type: 'category',
-                data: dateArr.reverse()
+                data: dateArr
             },
             yAxis: {
                 type: 'value',
@@ -127,7 +127,7 @@ onMounted(() => {
             xAxis: {
                 name: '日期',
                 type: 'category',
-                data: dateArr.reverse()
+                data: dateArr
             },
             yAxis: {
                 type: 'value',
@@ -163,14 +163,15 @@ onMounted(() => {
     })
     getOrderSevenData().then(res => {
         orderSeven.value = res.data
+        console.log(res);
         const optionOrder = {
             title: {
-                text: "近七天客房数量统计"
+                text: "近七天订单数量统计"
             },
             xAxis: {
                 name: '日期',
                 type: 'category',
-                data: dateArr.reverse()
+                data: dateArr
             },
             yAxis: {
                 type: 'value',

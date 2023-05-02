@@ -21,7 +21,7 @@ const EvaStore = defineStore("eva", {
     async createEvaAction(data) {
       const createRes = await createEva(data);
       console.log(createRes);
-      this.getEvaList({ size: 10, offset: 0 });
+      this.getEvaList({ content: "", size: 10, offset: 0 });
     },
     async deleteEvaAction(id) {
       const delResult = await deleteEvaByid(id);
@@ -30,12 +30,12 @@ const EvaStore = defineStore("eva", {
         message: "删除成功！",
         type: "success",
       });
-      this.getEvaList({ size: 10, offset: 0 });
+      this.getEvaList({ content: "", size: 10, offset: 0 });
     },
     async editEvaAction(data) {
       const editResult = await editEvaByid(data);
       console.log(editResult);
-      this.getEvaList({ size: 10, offset: 0 });
+      this.getEvaList({ content: "", size: 10, offset: 0 });
     },
   },
 });

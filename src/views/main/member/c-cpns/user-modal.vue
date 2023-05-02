@@ -2,7 +2,7 @@
   <div class="modal">
     <el-dialog v-model="dialogVisible" :title="isNewRef ? '新建用户' : '编辑用户'" width="30%" center>
       <div class="form">
-        <el-form :model="formData" label-width="80px" size="large">
+        <el-form :model="formData" label-width="80px" size="large" :rules="rules" ref="ruleFormRef">
           <el-form-item label="用户昵称" prop="nickname">
             <el-input v-model="formData.nickname" placeholder="请输入用户名" />
           </el-form-item>
@@ -20,7 +20,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="handleConfirmClick">
+          <el-button type="primary" @click="handleConfirmClick(ruleFormRef)">
             确定
           </el-button>
         </span>
@@ -42,8 +42,23 @@ const formData = reactive({
   realname: '',
   phonenumber: '',
 })
+const ruleFormRef = ref()
 const isNewRef = ref(true)
 const editData = ref()
+const rules = reactive({
+  nickname: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+  ],
+  password: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+  ],
+  realname: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+  ],
+  phonenumber: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+  ],
+})
 
 // 2.获取roles/departments数据
 const mainStore = useMainStore()
@@ -68,15 +83,22 @@ function setModalVisible(isNew = true, itemData) {
 }
 
 // 3.点击了确定的逻辑
-function handleConfirmClick() {
-  dialogVisible.value = false
-  if (!isNewRef.value && editData.value) {
-    // 编辑用户的数据
-    // mainStore.editUserDataAction(editData.value.id, formData)
-  } else {
-    // 创建新的用户
-    mainStore.createUserAction(formData)
-  }
+async function handleConfirmClick(formEl) {
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      dialogVisible.value = false
+      if (!isNewRef.value && editData.value) {
+        // 编辑用户的数据
+        // mainStore.editUserDataAction(editData.value.id, formData)
+      } else {
+        // 创建新的用户
+        mainStore.createUserAction(formData)
+      }
+    } else {
+      console.log('error submit!', fields)
+    }
+  })
+
 }
 
 // 暴露的属性和方法

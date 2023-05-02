@@ -26,6 +26,11 @@ const ClassifyStore = defineStore("classify", {
           message: "请填写完整信息！",
           type: "error",
         });
+      } else if (createRes.code === -1009) {
+        ElMessage({
+          message: "排序已存在！",
+          type: "error",
+        });
       } else {
         ElMessage({
           message: "创建成功！",
@@ -46,7 +51,12 @@ const ClassifyStore = defineStore("classify", {
     async editClassifyAction(data) {
       const editResult = await editClassifyByid(data);
       console.log(editResult);
-      if (editResult.code === -1001) {
+      if (!editResult) {
+        ElMessage({
+          message: "修改失败！",
+          type: "error",
+        });
+      } else if (editResult.code === -1001) {
         ElMessage({
           message: "请填写完整信息！",
           type: "error",
