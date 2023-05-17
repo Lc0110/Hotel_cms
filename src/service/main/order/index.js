@@ -42,10 +42,23 @@ export function getOrderData(data) {
   });
 }
 
-
 export function getOrderSevenData(data) {
   return hyRequest.post({
     url: `order/getSevenData`,
+    data,
+  });
+}
+
+export function getTurnData(data) {
+  return hyRequest.post({
+    url: `order/getTurndata`,
+    data,
+  });
+}
+
+export function getTurnSevenData(data) {
+  return hyRequest.post({
+    url: `order/getTurnSevenData`,
     data,
   });
 }

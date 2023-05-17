@@ -36,6 +36,7 @@ const OrderStore = defineStore("order", {
     async changeStatus(data) {
       const changeResult = await changeOrderStatus(data);
       console.log(changeResult);
+      this.getOrderList({ size: 10, offset: 0 });
     },
   },
 });

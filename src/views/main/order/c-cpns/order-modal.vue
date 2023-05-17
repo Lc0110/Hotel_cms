@@ -73,6 +73,10 @@ function handleConfirmClick() {
         let data = {
             gst_id: createData.value.g_id,
         }
+        let orderData = {
+            ord_id: createData.value.ord_id,
+            status: 2
+        }
         searchGuest(data).then(res => {
             const c_id = res.data[0].c_id
             let creData = {
@@ -88,9 +92,8 @@ function handleConfirmClick() {
                     roomStore.createRoomAction(creData)
                 }
             })
-
+            orderStore.changeStatus(orderData)
         })
-        orderStore.getOrderList({ size: 10, offset: 0 });
     }
 }
 
