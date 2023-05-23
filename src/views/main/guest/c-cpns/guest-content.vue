@@ -18,6 +18,7 @@
                 <el-table-column align="center" label="价格" prop="price" width="120px" />
                 <el-table-column align="center" label="面积" prop="area" width="120px" />
                 <el-table-column align="center" label="可住人数" prop="live" width="120px" />
+                <el-table-column align="center" label="数量" prop="num" width="120px" />
                 <el-table-column align="center" label="是否有wifi" prop="is_wifi" width="120px">
                     <template #default="scope">
                         {{ formatIs(scope.row.is_wifi) }}
@@ -38,12 +39,16 @@
                         {{ formatIs(scope.row.is_kt) }}
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="创建时间" prop="createAt">
+                <el-table-column align="center" label="是否有空调" prop="is_kt" width="120px">
+                    <template #default="scope">
+                        {{ formatIs(scope.row.is_kt) }}
+                    </template>
+                </el-table-column>
+                <!-- <el-table-column align="center" label="创建时间" prop="createAt">
                     <template #default="scope">
                         {{ formatUTC(scope.row.createAt) }}
                     </template>
-                </el-table-column>
-
+                </el-table-column> -->
                 <el-table-column align="center" label="操作" width="200px">
                     <template #default="scope">
                         <el-button size="small" icon="Edit" type="primary" text @click="handleEditBtnClick(scope.row)">

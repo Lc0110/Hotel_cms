@@ -38,8 +38,8 @@
                             v-if="scope.row.status !== 2 && scope.row.status !== 4">
                             开房
                         </el-button>
-                        <el-button size="small" icon="Delete" type="danger" text
-                            @click="handleExitBtnClick(scope.row.ord_id)" v-if="scope.row.status !== 4">
+                        <el-button size="small" icon="Delete" type="danger" text @click="handleExitBtnClick(scope.row)"
+                            v-if="scope.row.status !== 4">
                             退房
                         </el-button>
                     </template>
@@ -112,8 +112,8 @@ function fetchOrderListData(ord_id = "") {
 function handleExitBtnClick(itemData) {
     emit('exitRoomClick', itemData)
 }
-function handleCreateBtnClick(id) {
-    emit('createRoomClick', id)
+function handleCreateBtnClick(itemData) {
+    emit('createRoomClick', itemData)
 }
 
 defineExpose({ fetchOrderListData })

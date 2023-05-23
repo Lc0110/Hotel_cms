@@ -47,3 +47,10 @@ export function getGuestSevenData(data) {
     data,
   });
 }
+
+export function changeNum(data) {
+  return hyRequest.post({
+    url: `guest/changeNum`,
+    data,
+  });
+}

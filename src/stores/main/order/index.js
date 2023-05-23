@@ -38,6 +38,10 @@ const OrderStore = defineStore("order", {
       console.log(changeResult);
       this.getOrderList({ size: 10, offset: 0 });
     },
+    async changeNum(data) {
+      const changeResult = await changeNum(data);
+      console.log(changeResult);
+    },
   },
 });
 

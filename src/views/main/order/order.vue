@@ -21,7 +21,7 @@ function handleResetClick() {
     contentRef.value.fetchOrderListData();
 }
 function handleCreateRoom(itemData) {
-    modalRef.value?.setModalVisible(true,itemData)
+    modalRef.value?.setModalVisible(true, itemData)
 }
 function handleExitRoom(itemData) {
     modalRef.value?.setModalVisible(false, itemData)

@@ -31,6 +31,9 @@
                     <el-form-item label="可住人数" prop="live">
                         <el-input v-model="formData.live" placeholder="请输入可住人数" />
                     </el-form-item>
+                    <el-form-item label="数量" prop="num">
+                        <el-input v-model="formData.num" placeholder="请输入数量" />
+                    </el-form-item>
                     <el-form-item label="客房描述" prop="description">
                         <el-input v-model="formData.description" placeholder="请输入描述" />
                     </el-form-item>
@@ -96,7 +99,8 @@ const formData = reactive({
     is_wifi: '',
     is_tj: '',
     is_kt: '',
-    is_window: ''
+    is_window: '',
+    num: ''
 })
 const ruleFormRef = ref()
 const arr = [
@@ -127,6 +131,9 @@ const rules = reactive({
     ],
     live: [
         { required: true, message: '请输入可住人数', trigger: 'blur' },
+    ],
+    num: [
+        { required: true, message: '请输入数量', trigger: 'blur' },
     ],
     description: [
         { required: true, message: '请输入描述', trigger: 'blur' },

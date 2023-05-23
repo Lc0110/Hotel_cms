@@ -24,7 +24,7 @@
 import { reactive, ref } from 'vue'
 import useRoomStore from '@/stores/main/room'
 import useOrderStore from '@/stores/main/order'
-import { searchGuest } from '@/service/main/guest';
+import { searchGuest, changeNum } from '@/service/main/guest';
 import { searchRoom } from '@/service/main/room';
 
 // 1.定义内部的属性
@@ -35,6 +35,7 @@ const formData = reactive({
 const isCreateRef = ref(true)
 const createData = ref()
 const orderId = ref()
+const guestId = ref()
 
 const roomStore = useRoomStore()
 const orderStore = useOrderStore()
@@ -49,7 +50,8 @@ function setModalVisible(isCreate = true, itemData) {
     if (isCreate) {
         createData.value = itemData
     } else {
-        orderId.value = itemData
+        guestId.value = itemData.g_id
+        orderId.value = itemData.ord_id
     }
 
 }
@@ -67,6 +69,9 @@ function handleConfirmClick() {
             ord_id: orderId.value,
             status: 4
         }
+        changeNum({ gst_id: guestId.value, num: 1 }).then(res => {
+            console.log(res);
+        })
         roomStore.changeStatus(roomData, orderData)
     } else {
         // 开房
@@ -91,6 +96,9 @@ function handleConfirmClick() {
                 } else {
                     roomStore.createRoomAction(creData)
                 }
+            })
+            changeNum({ ...data, num: -1 }).then(res => {
+                console.log(res);
             })
             orderStore.changeStatus(orderData)
         })
